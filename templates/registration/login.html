@@ -1,0 +1,11 @@
+{% block content %}
+    {% if user.is_authenticated %}
+        <h2>Вы уже вошли в систему <a href="{% url 'logout' %}">Выйти</a></h2>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Вход</button>
+        </form>
+    {% endif %}
+{% endblock content %}
