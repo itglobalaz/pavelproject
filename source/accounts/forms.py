@@ -4,7 +4,7 @@ from source.accounts.models import User
 
 
 class UserAddForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=False)
 
     class Meta:
         model = User

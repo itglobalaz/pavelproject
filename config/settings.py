@@ -15,6 +15,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 ALLOWED_HOSTS = ['*']
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -25,7 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Apps
-    'source.accounts.apps.AccountsConfig'
+    'source.accounts.apps.AccountsConfig',
+    'source.main.apps.MainConfig',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -92,5 +95,13 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static_dev')
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
