@@ -12,6 +12,10 @@
                     <div class="col-md-12">
                         <div class="page_title">
                             <h2>{{ project.name }}: Tasks</h2>
+                            Memberships ({{ project.memberships.count }}):
+                            {% for membership in project.memberships.all %}
+                               {{ membership.username }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
