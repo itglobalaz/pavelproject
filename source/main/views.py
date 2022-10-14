@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (render, get_object_or_404)
-from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import ListView, DetailView
 
 from source.main.models import (Project, Tasks)
 
@@ -13,15 +12,16 @@ class Home(LoginRequiredMixin, ListView):
     context_object_name = 'projects'
 
 
-@login_required()
-def project_detail(request, slug):
-    project = get_object_or_404(Project, slug=slug)
-    tasks = Tasks.objects.filter(project=project).order_by('created_at').select_related('project')
-    context = {
-        'project': project,
-        'tasks': tasks
-    }
-    return render(request, 'project_detail.html', context)
+class ProjectDetail(LoginRequiredMixin, DetailView):
+    template_name = 'project_detail.html'
+    model = Project
+    slug_field = 'slug'
+    context_object_name = 'project'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = Tasks.objects.filter(project=self.object).order_by('created_at').select_related('project')
+        return context
 
 
 @login_required()
