@@ -2,19 +2,17 @@ from django.db import models
 from django.urls import reverse
 
 from source.accounts.models import User
+from source.main.constants import ProjectStatus
 
 
 class Project(models.Model):
-    STATUS = (
-        ('Active', 'Active'),
-        ('Archive', 'Archive'),
-    )
     name = models.CharField(max_length=255, verbose_name='Project name')
     description = models.TextField(verbose_name='Project description')
     memberships = models.ManyToManyField(User, verbose_name='Memberships', through='Membership')
-    status = models.CharField(choices=STATUS, default='Active', max_length=100)
+    status = models.CharField(choices=ProjectStatus.choices, default=ProjectStatus.OPEN, max_length=100,
+                              verbose_name='Status')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True, null=True)
 
     class Meta:
         verbose_name = 'Project'
@@ -24,7 +22,7 @@ class Project(models.Model):
         return self.name
 
     def get_project_url(self):
-        return reverse('project_detail', args=[self.slug])
+        return reverse('project_detail', kwargs={'slug': self.slug})
 
 
 class Membership(models.Model):
@@ -32,18 +30,17 @@ class Membership(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
 
-class Tasks(models.Model):
-    STATUS = (
-        ('Active', 'Active'),
-        ('Archive', 'Archive'),
-    )
+class Task(models.Model):
+    auhtor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Author', related_name='project_author',
+                               null=True)
+    assignee = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Assignee',
+                                 related_name='project_assignee', null=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Project')
     name = models.CharField(max_length=255, verbose_name='Task name')
     description = models.TextField(verbose_name='Task description')
-    memberships = models.ManyToManyField(User, verbose_name='Memberships')
-    status = models.CharField(choices=STATUS, default='Active', max_length=100)
+    status = models.CharField(choices=ProjectStatus.choices, default=ProjectStatus.OPEN, max_length=100,
+                              verbose_name='Status')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    slug = models.SlugField()
 
     class Meta:
         verbose_name = 'Task'
@@ -53,4 +50,4 @@ class Tasks(models.Model):
         return self.name
 
     def get_task_url(self):
-        return reverse('task_detail', kwargs={'project_slug': self.project.slug, 'pk': self.id})
+        return reverse('task_detail', kwargs={'slug': self.project.slug, 'pk': self.id})

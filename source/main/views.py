@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (render, get_object_or_404)
 from django.views.generic import ListView, DetailView
 
-from source.main.models import (Project, Tasks)
+from source.main.models import (Project, Task)
 
 
 class Home(LoginRequiredMixin, ListView):
@@ -15,18 +15,19 @@ class Home(LoginRequiredMixin, ListView):
 class ProjectDetail(LoginRequiredMixin, DetailView):
     template_name = 'project_detail.html'
     model = Project
+    slug_url_kwarg = 'slug'
     slug_field = 'slug'
     context_object_name = 'project'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tasks'] = Tasks.objects.filter(project=self.object).order_by('created_at').select_related('project')
+        context['tasks'] = Task.objects.filter(project=self.object).order_by('created_at').select_related('project')
         return context
 
 
 @login_required()
 def task_detail(request, project_slug, pk):
-    task = get_object_or_404(Tasks, project__slug=project_slug, id=pk)
+    task = get_object_or_404(Task, project__slug=project_slug, id=pk)
     context = {
         'task': task,
     }

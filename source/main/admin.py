@@ -1,22 +1,19 @@
 from django.contrib import admin
 
-from source.main.models import Project, Tasks, Membership
+from source.main.models import Project, Task, Membership
 
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'status', 'created_at')
-    list_filter = ('status',)
-    list_editable = ('status',)
+    list_display = ('name', 'created_at')
     prepopulated_fields = {'slug': ('name',)}
 
 
-@admin.register(Tasks)
+@admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'created_at')
     list_filter = ('status',)
     list_editable = ('status',)
-    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Membership)
