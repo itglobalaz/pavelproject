@@ -1,11 +1,16 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import (render, get_object_or_404)
+from django.views import View
+from django.views.generic import TemplateView, ListView
+
 from source.main.models import (Project, Tasks)
 
 
-@login_required()
-def home(request):
-    return render(request, 'index.html')
+class Home(LoginRequiredMixin, ListView):
+    template_name = 'index.html'
+    model = Project
+    context_object_name = 'projects'
 
 
 @login_required()

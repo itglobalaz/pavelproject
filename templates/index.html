@@ -1,8 +1,6 @@
 {% extends 'wrapper/base.html' %}
 {% load static %}
-{% load main_tag %}
 {% load static %}
-{% load main_tag %}
 {% block content %}
       <div class="full_container">
          <div class="inner_container">
@@ -29,7 +27,6 @@
                             <div class="col-md-12">
                                 <div class="white_shd full margin_bottom_30">
                                     <div class="full graph_head">
-                                        {% get_projects as projects %}
                                         <div class="heading1 margin_0">
                                             <h2>Projects <small>({{ projects.count }})</small></h2>
                                         </div>
@@ -48,6 +45,7 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
+
                                                         {% for project in projects %}
                                                             <tr>
                                                                 <td>{{ forloop.revcounter }}</td>
