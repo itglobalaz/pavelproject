@@ -1,0 +1,52 @@
+{% extends 'wrapper/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% include 'etc/sidebar.html' %}
+        <div id="content">
+          {% include 'etc/topbar.html' %}
+        <div class="midde_cont">
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <h2>New task</h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- row -->
+                <div class="row column1">
+                    <div class="col-md-12">
+                        <div class="white_shd full margin_bottom_30">
+                            <div class="full price_table padding_infor_info">
+                                <div class="row">
+                                         {% if messages %}
+                                            {% for message in messages %}
+                                                {{ message }}
+                                            {% endfor %}
+                                        {% endif %}
+                                    <div class="col-lg-12">
+                                   <form action="" method="post">
+                                        {% csrf_token %}
+                                        {{ form|crispy }}
+                                        <button type="submit">Create new task!</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                            <!-- end row -->
+                </div>
+                <!-- footer -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="footer">
+                        <p>Copyright © 2022. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+</div>
+</div>
+</div>
+{% endblock content %}

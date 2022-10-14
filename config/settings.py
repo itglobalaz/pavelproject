@@ -29,9 +29,13 @@ INSTALLED_APPS = [
     # Apps
     'source.accounts.apps.AccountsConfig',
     'source.main.apps.MainConfig',
+
+    # 3rd apps
+    'crispy_forms'
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
