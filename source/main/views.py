@@ -25,10 +25,11 @@ class ProjectDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-@login_required()
-def task_detail(request, project_slug, pk):
-    task = get_object_or_404(Task, project__slug=project_slug, id=pk)
-    context = {
-        'task': task,
-    }
-    return render(request, 'task_detail.html', context)
+class TaskDetail(LoginRequiredMixin, DetailView):
+    template_name = 'task_detail.html'
+    model = Task
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task'] = get_object_or_404(Task)
+        return context

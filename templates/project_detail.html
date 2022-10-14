@@ -17,6 +17,7 @@
                             {% for membership in project.memberships.all %}
                                {{ membership.username }}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
+                        <i class="fa-plus"></i>
                         </div>
                     </div>
                 </div>
@@ -91,5 +92,5 @@
 </div>
 <!-- end dashboard inner -->
 </div>
-
+    </div>
 {% endblock content %}
