@@ -33,11 +33,6 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     template_name = 'task_detail.html'
     model = Task
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['task'] = get_object_or_404(Task)
-        return context
-
 
 class TaskCreateView(CreateView):
     def get(self, request, *args, **kwargs):
