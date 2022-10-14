@@ -1,11 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import (render, get_object_or_404)
-from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView
-
+from django.shortcuts import (render)
+from django.views.generic import (ListView, DetailView, CreateView)
 from source.main.forms import TaskCreateForm
 from source.main.models import (Project, Task)
 
