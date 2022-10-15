@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import (render)
 from django.views.generic import (ListView, DetailView, CreateView)
+
+from source.accounts.models import User
 from source.main.forms import TaskCreateForm
 from source.main.models import (Project, Task)
 
@@ -39,8 +41,9 @@ class TaskCreateView(CreateView):
     def post(self, request, *args, **kwargs):
         form = TaskCreateForm(request.POST)
         if form.is_valid():
-            task = form.save()
-            task.save()
+            form = form.save(commit=False)
+            form.author = request.user
+            form.save()
             messages.success(request, 'Поздравляем вы только что успешно добавили новый таск!')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         return render(request, 'etc/task_form.html', {'form': form})
