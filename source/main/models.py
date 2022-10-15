@@ -31,7 +31,7 @@ class Membership(models.Model):
 
 
 class Task(models.Model):
-    auhtor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Author', related_name='project_author',
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Author', related_name='project_author',
                                null=True)
     assignee = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Assignee',
                                  related_name='project_assignee', null=True)
