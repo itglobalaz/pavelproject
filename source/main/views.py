@@ -2,9 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import (render)
-from django.views.generic import (ListView, DetailView, CreateView)
+from django.urls import reverse
+from django.views.generic import (ListView, DetailView, CreateView, UpdateView)
+from django.contrib.messages.views import SuccessMessageMixin
 
-from source.accounts.models import User
 from source.main.forms import TaskCreateForm
 from source.main.models import (Project, Task)
 
@@ -36,7 +37,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 class TaskCreateView(CreateView):
     def get(self, request, *args, **kwargs):
         context = {'form': TaskCreateForm()}
-        return render(request, 'etc/task_form.html', context)
+        return render(request, 'etc/task_create.html', context)
 
     def post(self, request, *args, **kwargs):
         form = TaskCreateForm(request.POST)
@@ -46,4 +47,14 @@ class TaskCreateView(CreateView):
             form.save()
             messages.success(request, 'Поздравляем вы только что успешно добавили новый таск!')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        return render(request, 'etc/task_form.html', {'form': form})
+        return render(request, 'etc/task_create.html', {'form': form})
+
+
+class TaskUpdate(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Task
+    fields = '__all__'
+    template_name = 'etc/task_edit.html'
+    success_message = 'Задание отредактирована успешно!'
+
+    def get_success_url(self):
+        return reverse('task_update', kwargs={'pk': self.object.id})
