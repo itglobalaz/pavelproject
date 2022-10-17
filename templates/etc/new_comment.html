@@ -10,7 +10,7 @@
                 <div class="row column_title">
                     <div class="col-md-12">
                         <div class="page_title">
-                            <h2>New task</h2>
+                            <h2>New comment</h2>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,8 @@
                                    <form action="" method="post">
                                         {% csrf_token %}
                                         {{ form|crispy }}
-                                        <button type="submit">Create new comment!</button>
+                              <button class="btn btn-primary" type="submit">Send comment</button>
+
                                     </form>
                                     </div>
                                 </div>

@@ -35,6 +35,11 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     template_name = 'task_detail.html'
     model = Task
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.task_comments.order_by('-created_at')
+        return context
+
 
 class TaskCreateView(CreateView):
     model = Task

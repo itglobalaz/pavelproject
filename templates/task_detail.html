@@ -10,11 +10,12 @@
                 <div class="row column_title">
                     <div class="col-md-12">
                         <div class="page_title">
-                            <h2>{{ task.name }} {{ task.created_at }}</h2>
+                            <h2>Task: {{ task.name }} </h2>
+                           <span>Created: {{ task.created_at }}</span>
                             <br>
                             {% if messages %}
                                 {% for message in messages %}
-                                    <h5> {{ message }}</h5>
+                                    <span class="text-success"> {{ message }}</span>
                                 {% endfor %}
                             {% endif %}
                         </div>
@@ -32,7 +33,7 @@
                                         <br>
                                         <br>
                                         <a href="{% url 'task_update' pk=task.id %}">
-                                            <button>Task edit</button>
+                                            <button class="btn btn-primary">Task edit</button>
                                         </a>
                                     </div>
                                 </div>
@@ -42,8 +43,8 @@
                     <!-- end row -->
                 </div>
                 <!-- footer -->
-            {% for comment in object.task_comments.all %}
-            {{ comment.author }}: {{ comment.comment }}
+            {% for comment in comments %}
+                {{ comment.author }} ({{ comment.created_at }}): {{ comment.comment }}
                 <br>
                 <hr>
             {% endfor %}
@@ -52,8 +53,11 @@
                         <div class="footer">
                            <form action="{% url 'new_comment' slug=object.project.slug pk=object.id %}" method="POST">
                                 {% csrf_token %}
-                                <input type="text" name="comment">
-                                <button type="submit">Send comment</button>
+                                <div class="mb-3 mt-5">
+                                  <label for="exampleFormControlTextarea1" class="form-label">Comment</label>
+                                  <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" rows="8"></textarea>
+                                </div>
+                               <button class="btn btn-primary" type="submit">Send comment</button>
                             </form>
                         </div>
                     </div>
