@@ -62,7 +62,7 @@ class TaskUpdate(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return reverse('task_detail', kwargs={'slug': self.object.project.slug, 'pk': self.object.id})
 
 
-class NewComment(CreateView):
+class NewComment(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'etc/new_comment.html'
