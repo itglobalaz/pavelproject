@@ -3,8 +3,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
     {% include 'etc/sidebar.html' %}
-        <div id="content">
-          {% include 'etc/topbar.html' %}
+    <div id="content">
+        {% include 'etc/topbar.html' %}
         <div class="midde_cont">
             <div class="container-fluid">
                 <div class="row column_title">
@@ -20,11 +20,11 @@
                         <div class="white_shd full margin_bottom_30">
                             <div class="full price_table padding_infor_info">
                                 <div class="row">
-                                         {% if messages %}
-                                            {% for message in messages %}
-                                                {{ message }}
-                                            {% endfor %}
-                                        {% endif %}
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            {{ message }}
+                                        {% endfor %}
+                                    {% endif %}
                                     <div class="col-lg-12">
                                         <a href="{% url 'task_update' pk=task.id %}">
                                             <button>Task edit</button>
@@ -34,17 +34,24 @@
                             </div>
                         </div>
                     </div>
-                            <!-- end row -->
+                    <!-- end row -->
                 </div>
                 <!-- footer -->
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="footer">
-                        <p>Copyright © 2022. All rights reserved.</p>
+            {% for comment in object.task_comments.all %}
+            {{ comment.comment }}
+            {% endfor %}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="footer">
+                           <form action="{% url 'new_comment' slug=object.project.slug pk=object.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="text" name="comment">
+                                <button type="submit">Send comment</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-</div>
-</div>
-</div>
+        </div>
+    </div>
 {% endblock content %}

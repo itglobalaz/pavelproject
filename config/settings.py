@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # Apps
     'source.accounts.apps.AccountsConfig',
     'source.main.apps.MainConfig',
+    'source.comments.apps.CommentsConfig',
 
     # 3rd apps
     'crispy_forms'

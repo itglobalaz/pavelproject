@@ -1,11 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import (render)
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView)
 from django.contrib.messages.views import SuccessMessageMixin
 
+from source.comments.forms import CommentForm
+from source.comments.models import Comment
 from source.main.forms import TaskCreateForm
 from source.main.models import (Project, Task)
 
@@ -35,19 +37,19 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 
 
 class TaskCreateView(CreateView):
-    def get(self, request, *args, **kwargs):
-        context = {'form': TaskCreateForm()}
-        return render(request, 'etc/task_create.html', context)
+    model = Task
+    template_name = 'etc/task_create.html'
+    form_class = TaskCreateForm
 
-    def post(self, request, *args, **kwargs):
-        form = TaskCreateForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.author = request.user
-            form.save()
-            messages.success(request, 'Поздравляем вы только что успешно добавили новый таск!')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        return render(request, 'etc/task_create.html', {'form': form})
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+        messages.success(self.request, 'Поздравляем вы только что успешно добавили новый таск!')
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('project_detail', kwargs={'slug': self.object.project.slug})
 
 
 class TaskUpdate(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
@@ -58,3 +60,20 @@ class TaskUpdate(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('task_update', kwargs={'pk': self.object.id})
+
+
+class NewComment(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'etc/new_comment.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.task = get_object_or_404(Task, pk=self.kwargs['pk'], project__slug=self.kwargs['slug'])
+        self.object.save()
+        messages.success(self.request, 'Поздравляем вы только что успешно добавили новый коммент!')
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('task_detail', kwargs={'slug': self.object.task.project.slug, 'pk': self.object.task.id})
