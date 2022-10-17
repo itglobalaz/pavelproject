@@ -43,7 +43,9 @@
                 </div>
                 <!-- footer -->
             {% for comment in object.task_comments.all %}
-            {{ comment.comment }}
+            {{ comment.author }}: {{ comment.comment }}
+                <br>
+                <hr>
             {% endfor %}
                 <div class="container-fluid">
                     <div class="row">
