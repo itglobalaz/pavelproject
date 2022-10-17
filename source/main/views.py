@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView)
 from django.contrib.messages.views import SuccessMessageMixin
@@ -41,7 +41,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     template_name = 'etc/task_create.html'
     form_class = TaskCreateForm
