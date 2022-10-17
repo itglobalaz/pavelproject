@@ -1,6 +1,7 @@
 from pathlib import Path
 import environ
 import os
+from config.etc.text_editor import *
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
 
     # Apps
     'source.accounts.apps.AccountsConfig',
@@ -32,7 +34,7 @@ INSTALLED_APPS = [
     'source.comments.apps.CommentsConfig',
 
     # 3rd apps
-    'crispy_forms'
+    'crispy_forms',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'

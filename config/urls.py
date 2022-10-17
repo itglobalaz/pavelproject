@@ -6,5 +6,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('sign-up/', include('source.accounts.urls')),
     path('', include('source.main.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 
 ]
