@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView)
 from django.contrib.messages.views import SuccessMessageMixin
@@ -59,7 +59,7 @@ class TaskUpdate(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_message = 'Задание отредактирована успешно!'
 
     def get_success_url(self):
-        return reverse('task_update', kwargs={'pk': self.object.id})
+        return reverse('task_detail', kwargs={'slug': self.object.project.slug, 'pk': self.object.id})
 
 
 class NewComment(CreateView):
