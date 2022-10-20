@@ -30,6 +30,9 @@ class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.project}: {self.user}'
+
 
 class Task(models.Model):
     author = models.ForeignKey(User, editable=False, on_delete=models.CASCADE, verbose_name='Author',

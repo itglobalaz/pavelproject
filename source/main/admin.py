@@ -11,8 +11,8 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('author', 'name', 'status', 'created_at')
-    list_filter = ('status',)
+    list_display = ('author', 'assignee', 'name', 'status', 'created_at', 'project')
+    list_filter = ('status', 'project')
     list_editable = ('status',)
 
 
