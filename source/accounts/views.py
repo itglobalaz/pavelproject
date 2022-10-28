@@ -1,15 +1,16 @@
-from django.contrib import messages
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
+from django.views.generic import CreateView
 
 from source.accounts.forms import UserAddForm
+from source.accounts.models import User
 
 
-def user_add(request):
-    form = UserAddForm(request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Поздравляем вы только что успешно добавили нового пользователя!')
-        else:
-            messages.warning(request, 'Что то пошло не так!')
-    return render(request, 'registration/registration.html', {'form': form})
+class AddNewUser(LoginRequiredMixin, CreateView):
+    model = User
+    form_class = UserAddForm
+    template_name = 'registration/registration.html'
+    success_message = 'Вы добавили нового пользователя'
+
+    def get_success_url(self):
+        return reverse('add_user')

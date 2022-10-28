@@ -9,3 +9,4 @@ class CustomUserAdmin(UserAdmin):
     add_form = UserAddForm
     list_display = ['email', 'username']
     model = User
+    list_display_links = ('email', 'username',)

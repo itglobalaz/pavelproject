@@ -1,16 +1,61 @@
+{% extends 'wrapper/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
-    {% if user.is_superuser %}
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Регистрация</button>
-        </form>
-    {% else %}
-        <h2>Вы не имеете право добавлять нового пользователя так как не являетесь администратором.</h2>
-    {% endif %}
-{% endblock content %}
+
+    {% include 'etc/sidebar.html' %}
+    <div id="content">
+        {% include 'etc/topbar.html' %}
+        <div class="midde_cont">
+            <div class="container-fluid">
+                <div class="row column_title">
+                    <div class="col-md-12">
+                        <div class="page_title">
+                            <h2>Add new user</h2>
+                        </div>
+                    </div>
+                </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <h2>{{ message }}</h2>
+                    {% endfor %}
+                {% endif %}
+                <!-- row -->
+                <div class="row column1">
+                    <div class="col-md-12">
+                        <div class="white_shd full margin_bottom_30">
+                            <div class="full price_table padding_infor_info">
+                                <div class="row">
+
+                                    <div class="col-lg-12">
+                                    {% if user.is_superuser %}
+                                        <form action="" method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            {{ form|crispy }}
+                                            {{ form.media }}
+                                            <button class="btn btn-primary" type="submit">Add</button>
+                                        </form>
+                                             {% else %}
+                                            <h2>У вас нет прав</h2>
+                                      {% endif %}
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+                </div>
+                <!-- footer -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="footer">
+                            <p>Copyright © 2022. All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}}}
