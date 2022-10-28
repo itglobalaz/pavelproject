@@ -9,28 +9,25 @@ from django.contrib.messages.views import SuccessMessageMixin
 from source.comments.forms import CommentForm
 from source.comments.models import Comment
 from source.main.forms import TaskCreateForm
+from source.main.mixins import FilterByProjectMixin
 from source.main.models import (Project, Task)
 
 
-class Home(LoginRequiredMixin, ListView):
+class Home(LoginRequiredMixin, FilterByProjectMixin, ListView):
     template_name = 'index.html'
     model = Project
     context_object_name = 'projects'
-
-    def get_queryset(self):
-        return Project.objects.filter(membership__user=self.request.user)
+    membership_path = 'membership__user'
 
 
-class ProjectDetail(LoginRequiredMixin, DetailView):
+class ProjectDetail(LoginRequiredMixin, FilterByProjectMixin, DetailView):
     template_name = 'project_detail.html'
     model = Project
-    context_object_name = 'project'
+    membership_path = 'membership__user'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tasks'] = Task.objects.filter(
-            project__membership__user=self.request.user,
-            project=self.object).order_by('-created_at').select_related('project')
+        context['tasks'] = Task.objects.filter(project=self.object).order_by('-created_at').select_related('project')
         return context
 
 
