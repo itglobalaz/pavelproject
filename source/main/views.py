@@ -25,7 +25,7 @@ class ProjectDetail(LoginRequiredMixin, FilterByProjectMixin, ListView):
     template_name = 'project_detail.html'
     model = Task
     membership_path = 'membership__user'
-    paginate_by = 1
+    paginate_by = 15
     context_object_name = 'tasks'
 
     def get_context_data(self, **kwargs):
