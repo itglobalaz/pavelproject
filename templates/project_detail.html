@@ -4,8 +4,7 @@
     {% include 'etc/sidebar.html' %}
     <!-- right content -->
     <div id="content">
-                {% include 'etc/topbar.html' %}
-
+        {% include 'etc/topbar.html' %}
         <!-- dashboard inner -->
         <div class="midde_cont">
             <div class="container-fluid">
@@ -17,7 +16,6 @@
                             {% for membership in project.memberships.all %}
                                {{ membership.username }}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
-
                         </div>
                     </div>
                 </div>
@@ -67,7 +65,6 @@
                                                                          src="{% static 'images/layout_img/msg2.png' %}"
                                                                          class="rounded-circle" alt="#">
                                                                 </li>
-
                                                             </ul>
                                                         </td>
                                                         <td>
@@ -79,14 +76,15 @@
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
+                                            {% include 'etc/pagination.html' %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-</div>
-<!-- end row -->
-</div>
+                    </div>
+                    <!-- end row -->
+                </div>
 <!-- footer -->
     <div class="container-fluid">
         <div class="row">
@@ -98,5 +96,5 @@
 </div>
 <!-- end dashboard inner -->
 </div>
-    </div>
+</div>
 {% endblock content %}

@@ -1,0 +1,12 @@
+{% if is_paginated %}
+    <div class="pagination button_section button_style2 mt-5">
+        <div class="btn-group mr-2" role="group"
+             aria-label="First group">
+            {% for i in paginator.page_range %}
+                <a href="?page={{ i }}">
+                    <button type="button" class="{% if page_obj.number == i %}active btn{% else %}btn{% endif %}">{{ i }}</button>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

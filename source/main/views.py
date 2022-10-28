@@ -18,17 +18,23 @@ class Home(LoginRequiredMixin, FilterByProjectMixin, ListView):
     model = Project
     context_object_name = 'projects'
     membership_path = 'membership__user'
+    paginate_by = 15
 
 
-class ProjectDetail(LoginRequiredMixin, FilterByProjectMixin, DetailView):
+class ProjectDetail(LoginRequiredMixin, FilterByProjectMixin, ListView):
     template_name = 'project_detail.html'
-    model = Project
+    model = Task
     membership_path = 'membership__user'
+    paginate_by = 1
+    context_object_name = 'tasks'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tasks'] = Task.objects.filter(project=self.object).order_by('-created_at').select_related('project')
+        context['project'] = Project.objects.get(slug=self.kwargs['slug'])
         return context
+
+    def get_queryset(self):
+        return Task.objects.filter(project__slug=self.kwargs['slug']).order_by('-created_at').select_related('project')
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
